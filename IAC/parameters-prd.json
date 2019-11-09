@@ -13,7 +13,7 @@
         "DBInstanceType": "db.t3.medium",
         "RDSClusterName": "myapp-cluster",
         "DatabaseNameP": "myappdb",
-        "DatabaseReadReplicaName": "delcamwiki-rr",
+        "DatabaseReadReplicaName": "myapp-rr",
         "DatabaseUsername": "wikiuser",
         "DatabasePassword": "myapp123",
         "IAMAuthentication": "False",
