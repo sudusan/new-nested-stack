@@ -1,0 +1,104 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: delwiki template with nested stacks
+Parameters:
+  NestedTemplateBucket:
+    Type: String
+    Default: "delwiki-nested-template-bucket"
+  RDSClusterName:
+    Type: String
+    Default: "delwiki-cluster"
+  DatabaseNameP:
+    Type: String
+    Default: "delcamwiki"
+  DatabaseReadReplicaName:
+    Type: String
+    Default: "delcamwiki-rr"
+  DatabaseUsername:
+    Type: String
+    Default: "wikiuser"
+  DatabasePassword:
+    Type: String
+    Default: "delwiki123"
+  IAMAuthentication:
+    Type: String
+    Default: "False"
+  DatabaseSecurityGroups:
+    Type: String
+    Default: "RDS-Security-Group"
+  ApplicationName:
+    Type: String
+    Default: delwiki
+  EnvironmentClass:
+    Type: String
+    Default: PRD
+    AllowedValues:
+    - PRD
+  AMIIdentifier:
+    Type: String
+    Default: "ami-0f2ff98a5a52caecb"
+  DBInstanceType:
+    Type: String
+    Default: "db.t3.medium"
+  EC2InstanceType: 
+    Type: String
+    Default: "t2.medium"
+  EC2KeyName: 
+    Type: String
+    Default: "delwiki-prd"
+  EC2VPCSubNetIds:
+    Type: List<String>
+    Default: "subnet-073427a895bc1fa7f,subnet-043684269264d8b2a"
+  ALBVPCSubNetIds:
+    Type: List<String>
+    Default: "subnet-0f1c94199dbf174ab,subnet-0e9ee035efbfaf632"
+  DBSubNetIds:
+    Type: String
+    Default: "subnet-0d6408c6d1eb47d3b,subnet-0eba1750b8fe27b7e"
+  VpcId: 
+    Type: String
+    Default: "vpc-085e5a8d02267afc1"
+
+Resources:
+  ComputeFleet:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        AMIID: !Ref AMIIdentifier
+        LBSubnetID1: !Select [ 0 , !Ref ALBVPCSubNetIds ]
+        LBSubnetID2: !Select [ 1 , !Ref ALBVPCSubNetIds ]
+        InstanceType: !Ref EC2InstanceType
+        KeyName: !Ref EC2KeyName
+        SubnetID1: !Select [ 0 , !Ref EC2VPCSubNetIds ]
+        SubnetID2: !Select [ 1 , !Ref EC2VPCSubNetIds ]
+        VpcId: !Ref VpcId
+        AZ1: us-east-1a
+        AZ2: us-east-1b
+      Tags:
+        - Key: EnvironmentClass
+          Value: !Ref EnvironmentClass    
+        - Key: ApplicationName
+          Value: !Ref ApplicationName  
+      TemplateURL: !Sub https://s3.amazonaws.com/${NestedTemplateBucket}/IAC/nested-templates/compute.yml 
+  RelationalDataStore:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        EC2FleetSecurityGroup: !GetAtt ComputeFleet.Outputs.EC2SecurityGroup
+        DatabaseInstanceType: !Ref DBInstanceType
+        RDSClusterName: !Ref RDSClusterName
+        DatabaseNameP: !Ref DatabaseNameP
+        DatabaseReadReplicaName: !Ref DatabaseReadReplicaName
+        DatabasePassword: !Ref DatabasePassword
+        DatabaseUsername: !Ref DatabaseUsername
+        IAMAuthentication: !Ref IAMAuthentication
+        VpcId: !Ref VpcId
+        DatabaseSubnets:  !Ref DBSubNetIds
+        DatabaseSecurityGroups: !Ref DatabaseSecurityGroups
+
+      Tags:
+        - Key: EnvironmentClass
+          Value: !Ref EnvironmentClass    
+        - Key: ApplicationName
+          Value: !Ref ApplicationName  
+      TemplateURL: !Sub https://s3.amazonaws.com/${NestedTemplateBucket}/IAC/nested-templates/rds-mysql.yml 
+
