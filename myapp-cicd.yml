@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform:
   - 'AWS::Serverless-2016-10-31'
-Description: 'CICD Pipeline for Cirrus Delwiki application - single environment'
+Description: 'CICD Pipeline for Cirrus myapp application - single environment'
 Parameters:
  git2s3bucket:
   Description: 'Select the bucket based on the region'
@@ -17,11 +17,11 @@ Parameters:
  NestedTemplateBucket:
   Description: 'Name of the bucket which houses nested cloudformation templates'
   Type: String
-  Default: delwiki-nested-template-bucket
+  Default: myapp-nested-template-bucket
  ApplicationName:
   Description: 'Name of application'
   Type: String
-  Default: delwiki
+  Default: myapp
  EnvironmentClass:
   Description: 'Environment being deployed into'
   Type: String
@@ -39,15 +39,13 @@ Parameters:
  SlackWebhookUrl:
     Description: Incoming Webhook url for slack after you create your app, store and encrypt in parameter store, It should be of form {{resolve:ssm-secure:<key-name>:<version>}}'
     Type: String
-    Default: https://hooks.slack.com/services/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
  SlackChannel:
     Description: Slack Channel where approvals needs to be sent
     Type: String
-    Default: des_delwiki_cicd
+    Default: des_myapp_cicd
  SlackVerifToken:
     Description: slack verification token of the app, store and encrypt in parameter store, It should be of form {{resolve:ssm-secure:<key-name>:<version>}}'
     Type: String
-    Default: rLIkNhwwXTAwBeOT8jrnZBi2
  SlackApprovalMembers:
     Description: List of AD account of the member who can perform the slack approval for CICD.
     Type: String
@@ -78,7 +76,7 @@ Parameters:
  ChangeSetName:
   Description: 'Name of application'
   Type: String
-  Default: delwiki-changeset    
+  Default: myapp-changeset    
 Conditions:
   CreateNewSNSTopic: !Equals [!Ref NotificationsSNSTopic, '']
   UseAllowedIps: !Not [!Equals [ !Ref AllowedIps, '']]

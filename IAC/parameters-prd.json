@@ -1,21 +1,21 @@
 {
     "Parameters": {
-        "ApplicationName": "delwiki-prd",
+        "ApplicationName": "myapp-prd",
         "EnvironmentClass": "PRD",
-        "NestedTemplateBucket": "delwiki-nested-template-bucket",
+        "NestedTemplateBucket": "myapp-nested-template-bucket",
         "VpcId": "vpc-085e5a8d02267afc1",
         "EC2VPCSubNetIds": "subnet-073427a895bc1fa7f,subnet-043684269264d8b2a",
         "ALBVPCSubNetIds": "subnet-0f1c94199dbf174ab,subnet-0e9ee035efbfaf632",
         "DBSubNetIds": "subnet-0d6408c6d1eb47d3b,subnet-0eba1750b8fe27b7e",
         "EC2InstanceType": "t2.large",
         "AMIIdentifier": "ami-0f2ff98a5a52caecb",
-        "EC2KeyName": "delwiki-prd",
+        "EC2KeyName": "myapp-prd",
         "DBInstanceType": "db.t3.medium",
-        "RDSClusterName": "delwiki-cluster",
-        "DatabaseNameP": "delcamwiki",
+        "RDSClusterName": "myapp-cluster",
+        "DatabaseNameP": "myappdb",
         "DatabaseReadReplicaName": "delcamwiki-rr",
         "DatabaseUsername": "wikiuser",
-        "DatabasePassword": "delwiki123",
+        "DatabasePassword": "myapp123",
         "IAMAuthentication": "False",
         "DatabaseSecurityGroups": "RDS-Security-Group"
     }

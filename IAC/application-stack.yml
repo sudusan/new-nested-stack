@@ -1,24 +1,24 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: delwiki template with nested stacks
+Description: myapp template with nested stacks
 Parameters:
   NestedTemplateBucket:
     Type: String
-    Default: "delwiki-nested-template-bucket"
+    Default: "myapp-nested-template-bucket"
   RDSClusterName:
     Type: String
-    Default: "delwiki-cluster"
+    Default: "myapp-cluster"
   DatabaseNameP:
     Type: String
-    Default: "delcamwiki"
+    Default: "myappdb"
   DatabaseReadReplicaName:
     Type: String
-    Default: "delcamwiki-rr"
+    Default: "myapp-rr"
   DatabaseUsername:
     Type: String
     Default: "wikiuser"
   DatabasePassword:
     Type: String
-    Default: "delwiki123"
+    Default: "myapp123"
   IAMAuthentication:
     Type: String
     Default: "False"
@@ -27,7 +27,7 @@ Parameters:
     Default: "RDS-Security-Group"
   ApplicationName:
     Type: String
-    Default: delwiki
+    Default: myapp
   EnvironmentClass:
     Type: String
     Default: PRD
@@ -44,7 +44,7 @@ Parameters:
     Default: "t2.medium"
   EC2KeyName: 
     Type: String
-    Default: "delwiki-prd"
+    Default: "myapp-prd"
   EC2VPCSubNetIds:
     Type: List<String>
     Default: "subnet-073427a895bc1fa7f,subnet-043684269264d8b2a"
